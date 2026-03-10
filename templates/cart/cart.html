@@ -6,10 +6,15 @@
 
 {% block content %}
   <div>
-    <div></div>
     {% if cart_items.exists %}
-      {% include 'cart/partials/cart_items.html' %}
+      <div class="flex flex-col md:flex-row mx-4 lg:mx-8 md:gap-5">
+        <!-- Menu -->
+        {% include 'users/partials/menu.html' %}
+        <!-- Cart items -->
+        {% include 'cart/partials/cart_items.html' %}
+      </div>
     {% else %}
+      <!-- Empty cart -->
       {% include 'cart/partials/empty_cart.html' %}
     {% endif %}
   </div>

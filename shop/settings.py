@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv('SC_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -41,10 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     'users',
     'main',
     'cart',
+    'orders',
+    'payment',
 ]
 
 MIDDLEWARE = [
@@ -144,8 +146,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
-SESSION_SAVE_EVERY_REQUEST = True
-SESSION_COOKIE_AGE = 86400
+# Stripe payment system
+STRIPE_API_KEY = os.getenv('STRIPE_API_KEY')
+STRIPE_WEBHOOK = os.getenv('STRIPE_WEBHOOK')
 
-STRIPE_SC_KEY = os.getenv('STRIPE_SC_KEY')
-STRIPE_WEB_HOOK = os.getenv('STRIPE_WEB_HOOK')
+
+

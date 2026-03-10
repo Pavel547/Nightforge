@@ -5,8 +5,8 @@
       <form action="{% url 'users:logout' %}" method="post" class="shadow-xl/30 max-w-lg px-3 py-3">
         {% csrf_token %}
         <div class="grid grid-cols-2 gap-10">
-          <button class="border-2 border-gray-900 text-xl text-gray-900 hover:bg-gray-900 hover:text-gray-300 transition-color duration-700 cursor-pointer" type="submit">logout</button>
-          <a href="{% url 'users:profile' %}" class="text-center px-3 py-3 border-2 border-gray-900 text-xl text-gray-900 hover:text-gray-300 hover:bg-gray-900 transition-color duration-700">Back to profile</a>
+          <button class="border-2 border-gray-900 text-xl text-gray-900 hover:bg-gray-900 hover:text-gray-300 transition-colors duration-700 cursor-pointer" type="submit">logout</button>
+          <a href="{% url 'users:profile' %}" class="text-center px-3 py-3 border-2 border-gray-900 text-xl text-gray-900 hover:text-gray-200 hover:bg-gray-900 transition-colors duration-700">Back to profile</a>
         </div>
       </form>
     </div>

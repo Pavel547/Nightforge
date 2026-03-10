@@ -24,7 +24,6 @@ class CatalogView(ListView):
     template_name = 'main/catalog.html'
     model = Product
     context_object_name = 'products'
-    ordering = ['-created_at']
     
     # Filtration functions for get_queryset method
     FILTER_FUNC = {
@@ -32,7 +31,12 @@ class CatalogView(ListView):
         'max_price': lambda queryset, value: queryset.filter(price__lte=value), 
         'color': lambda queryset, value: queryset.filter(color__iexact=value), 
         'size': lambda queryset, value: queryset.filter(product_sizes__size__name=value), 
-        'on_stock': lambda queryset, value: queryset.filter(product_sizes__on_stock=value),
+    }
+    
+    SORT_FUNC = {
+        'price_asc': lambda queryset: queryset.order_by('price'),
+        'price_desc': lambda queryset: queryset.order_by('-price'),
+        'name': lambda queryset: queryset.order_by('name')
     }
     
     def get_queryset(self):
@@ -47,6 +51,12 @@ class CatalogView(ListView):
             value = self.request.GET.get(params)
             if value:
                 qs = filter_func(qs, value)
+        
+        for param, sort_func in self.SORT_FUNC.items():
+            value = self.request.GET.get('sort')
+            if value == param:
+                qs = sort_func(qs)
+        
         return qs
     
     

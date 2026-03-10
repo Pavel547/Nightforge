@@ -10,6 +10,7 @@ import json
 
 
 class CartMixin:
+# Get user cart method
     def get_cart(self, request):
         if request.user.is_authenticated:
             cart, created = Cart.objects.get_or_create(
@@ -25,7 +26,7 @@ class CartMixin:
             )
             return cart
 
-
+# Merg old and new carts method
     def merge_carts(self, request, old_session):
         if old_session:
             old_cart = Cart.objects.filter(
@@ -125,6 +126,7 @@ class UpdateCartItemView(CartMixin, View):
             if quantity > cart_item.product_size.stock:
                 messages.error(request, 
                                f'Only {cart_item.product_size.stock} avalible now')
+                return redirect('cart:details')
             cart_item.quantity = quantity
             cart_item.save()
             return redirect('cart:details')
@@ -150,3 +152,4 @@ class ClearCartView(CartMixin, View):
         
         messages.info(request, 'Cart successfully cleared')
         return redirect('cart:details')
+    

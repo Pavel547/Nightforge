@@ -1,27 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="relative h-screen w-full overflow-hidden">
-    <div class="absolute inset-0 flex items-center justify-center">
-      <form action="{% url 'users:edit-account-details' %}" method="post" class="max-w-2xl shadow-xl/30 px-3 py-3">
-        {% csrf_token %}
-        <div class="grid grid-cols-1 mb-6">{{ form.email }}</div>
-        <div class="grid grid-cols-2 mb-6 gap-10">
-          <div>{{ form.first_name }}</div>
-          <div>{{ form.last_name }}</div>
-        </div>
-        <div class="grid grid-cols-2 mb-6 gap-10">
-          <div>{{ form.country }}</div>
-          <div>{{ form.city }}</div>
-        </div>
-        <div class="grid grid-cols-2 gap-10 mb-6">
-          <div>{{ form.address }}</div>
-          <div>{{ form.postal_code }}</div>
-        </div>
-        <div class="grid grid-cols-1">
-          <button type="submit" class="px-3 py-3 border-2 border-gray-900 text-gray-900 text-xl hover:text-gray-200 hover:bg-gray-900 transition-color duration-700">Edit data</button>
-        </div>
-      </form>
-    </div>
+  <div class="h-screen flex items-center justify-center">
+    <form action="{% url 'users:edit-account-details' %}" method="post" class="max-w-2xl shadow-xl/30 px-3 py-3">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ request.GET.next }}" />
+      <div class="grid grid-cols-1 mb-6">{{ form.email }}</div>
+      <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-5 mb-3 md:gap-10 md:mb-6">
+        <div>{{ form.first_name }}</div>
+        <div>{{ form.last_name }}</div>
+      </div>
+      <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-5 mb-3 md:gap-10 md:mb-6">
+        <div>{{ form.country }}</div>
+        <div>{{ form.city }}</div>
+      </div>
+      <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-5 mb-3 md:gap-10 md:mb-6">
+        <div>{{ form.address }}</div>
+        <div>{{ form.postal_code }}</div>
+      </div>
+      <div class="grid grid-cols-2 gap-5">
+        <button type="submit" class="border-2 border-gray-900 py-3 text-gray-900 text-xl hover:text-gray-200 hover:bg-gray-900 active:text-gray-200 active:bg-gray-900 transition-colors duration-700">Edit data</button>
+        <a href="{{ request.GET.next }}" class="text-center text-lg py-3 border-2 border-gray-900 hover:text-gray-200 hover:bg-gray-900 active:text-gray-200 active:bg-gray-900 transition-colors duration-700">Back</a>
+      </div>
+    </form>
   </div>
 {% endblock %}

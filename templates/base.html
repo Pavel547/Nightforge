@@ -20,10 +20,13 @@
     {% block header %}
 
     {% endblock %}
-    <main>
+    <main class="">
       {% block content %}
         {% include 'main/home.html' %}
       {% endblock %}
     </main>
+    {% block scripts %}
+
+    {% endblock %}
   </body>
 </html>

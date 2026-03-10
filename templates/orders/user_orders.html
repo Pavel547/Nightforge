@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  {% include 'main/header.html' %}
+{% endblock %}
+
+{% block content %}
+  <div class="flex flex-col md:flex-row mx-4 lg:mx-8 gap-8">
+    {% include 'users/partials/menu.html' %}
+
+    {% if orders %}
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
+        {% for order in orders %}
+          <a href="{% url 'orders:order' order.id %}">
+            <div class="text-xl space-y-1 border-2 border-gray-900 px-2 py-2 hover:border-gray-400 active:border-gray-400 transition-colors duration-300">
+              <p>Order number: {{ order.id }}</p>
+              <p>Order status: {{ order.order_status|default_if_none:'-' }}</p>
+              <p>Payment status: {{ order.payment_status|default_if_none:'-' }}</p>
+              <p>Total items: {{ order.total_items }}</p>
+              <p>Total price: {{ order.total_price }}</p>
+              <p>Last update: {{ order.updated_at|date:'d M Y' }}</p>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

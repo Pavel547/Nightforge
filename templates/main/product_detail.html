@@ -7,8 +7,8 @@
 {% block content %}
   <div class="mx-4 mt-4 lg:mx-8 lg:mt-8">
     <p class="text-gray-800 text-lg">
-      <a href="{% url 'main:catalog_all' %}" class="hover:text-gray-600 duration-300">CATALOG</a> /
-      <a href="{% url 'main:catalog' product.category.slug %}" class="hover:text-gray-600 duration-300">{{ product.category.slug|upper }}</a> /
+      <a href="{% url 'main:catalog_all' %}" class="hover:text-gray-600 transition-colors duration-300">CATALOG</a> /
+      <a href="{% url 'main:catalog' product.category.slug %}" class="hover:text-gray-600 transition-colors duration-300">{{ product.category.slug|upper }}</a> /
       {{ product.slug|upper }}
     </p>
     <div class="lg:flex mt-3 gap-10">
@@ -21,8 +21,8 @@
           <p class="text-3xl font-semibold text-gray-800">{{ product.price }} €</p>
         </div>
         <div class="mb-6">
-          <p class="text-sm text-gray-600 mb-2">Description:</p>
-          <p class="text-gray-700 leading-relaxed">{{ product.description }}</p>
+          <p class="text-sm text-gray-600 mb-2 md:text-2xl">Description:</p>
+          <p class="text-gray-700 md:text-xl ">{{ product.description }}</p>
         </div>
         <!-- Add to cart block -->
         <div>

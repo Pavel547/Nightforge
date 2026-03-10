@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="h-screen flex justify-center items-center">
+    <div class="text-center">
+      <h1 class="text-2xl text-gray-900">Order {{ order.id }} was cancelled</h1>
+      <a href="{% url 'main:catalog_all' %}" class="text-gray-900 hover:text-gray-400 transition-colors duration-700 cursor-pointer">return to catalog</a>
+    </div>
+  </div>
+{% endblock %}

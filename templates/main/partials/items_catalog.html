@@ -1,13 +1,13 @@
-<div class="grid grid-cols-1 gap-2 lg:grid-cols-4 lg:gap-10">
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-5">
   {% for product in products %}
-    <div class="hover:shadow-xl/30 transition-shadow duration-700 ease-in-out lg:px-3 lg:py-3">
+    <div class="hover:shadow-xl/30 transition-shadow duration-700 md:px-3 py-3 lg:px-3 lg:py-3">
       <a href="{% url 'main:product' product.slug %}">
         <div>
           <img src="{{ product.main_image.url }}" alt="{{ product.name|upper }} image" />
         </div>
         <div class="mt-3">
-          <p class="lg:text-xl text-gray-900">{{ product.name }}</p>
-          <p class="lg:text-lg text-gray-900">{{ product.price }} €</p>
+          <p class="md:text-2xl text-gray-900">{{ product.name }}</p>
+          <p class="md:text-xl text-gray-900">{{ product.price }} €</p>
         </div>
       </a>
     </div>

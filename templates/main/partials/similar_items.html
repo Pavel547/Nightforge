@@ -1,7 +1,7 @@
 <div class="mx-4 mt-4 lg:mx-8">
   <h1 class="text-2xl text-gray-900">Similar items:</h1>
 
-  <div class="border-gray-300 border-1 grid lg:grid-cols-4 lg:gap-10 py-3 px-3">
+  <div class="border-gray-300 border-1 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 lg:gap-10 py-3 px-3">
     {% for product in similar_products %}
       <div class="hover:shadow-xl/30 transition-shadow duration-700 lg:px-3 lg:py-3">
         <a href="{% url 'main:product' product.slug %}">

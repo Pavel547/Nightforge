@@ -1,32 +1,25 @@
 {% extends 'base.html' %}
+
 {% block content %}
-  <div class="relative h-screen w-full overflow-hidden">
-    <div class="absolute inset-0 flex items-center justify-center">
-      <form method="post" action="{% url 'users:register' %}" class="shadow-xl/30 max-w-2xl px-3 py-3 text-center">
-        {% csrf_token %}
-        <div>
-          <a href="{% url 'main:catalog_all' %}">
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle mb-6" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z" />
-            </svg>
-          </a>
-        </div>
-        <div class="grid grid-cols-1 mb-6">
-          <div>{{ form.email }}</div>
-        </div>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-10 mb-6">
-          <div>{{ form.first_name }}</div>
-          <div>{{ form.last_name }}</div>
-        </div>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-10 mb-6 w-full">
-          <div>{{ form.password1 }}</div>
-          <div>{{ form.password2 }}</div>
-        </div>
-        <div class="grid grid-cols-2 gap-10">
-          <button type="submit" class="px-3 py-3 border-2 border-gray-900 text-gray-900 text-xl hover:text-gray-200 hover:bg-gray-900 transition-color duration-700">Create Account</button>
-          <a href="{% url 'users:login' %}" class="text-center px-3 py-3 border-2 border-gray-900 text-xl text-gray-900 hover:text-gray-300 hover:bg-gray-900 transition-color duration-700">Log in</a>
-        </div>
-      </form>
-    </div>
+  <div class="h-screen flex items-center justify-center">
+    <form method="post" action="{% url 'users:register' %}" class="shadow-xl/30 max-w-2xl px-3 py-3 text-center">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ request.GET.next }}" />
+      <div class="grid grid-cols-1 mb-5">
+        <div>{{ form.email }}</div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 lg:gap-10 mb-5">
+        <div>{{ form.first_name }}</div>
+        <div>{{ form.last_name }}</div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 lg:gap-10 mb-5">
+        <div>{{ form.password1 }}</div>
+        <div>{{ form.password2 }}</div>
+      </div>
+      <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 sm:gap-2 md:gap-5 lg:gap-10">
+        <button type="submit" class="px-3 py-3 border-2 border-gray-900 text-gray-900 text-xl hover:text-gray-200 hover:bg-gray-900 transition-colors duration-700">Create Account</button>
+        <a href="{{ request.GET.next }}" class="px-3 py-3 border-2 border-gray-900 text-xl text-gray-900 hover:text-gray-300 hover:bg-gray-900 transition-colors duration-700">Back</a>
+      </div>
+    </form>
   </div>
 {% endblock %}
