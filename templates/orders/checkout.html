@@ -3,22 +3,57 @@
 {% block content %}
   <div class="mx-8 my-8">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-10">
-      <form action="{% url 'orders:checkout' %}" method="post" class="shadow-xl/30 max-w-xl px-3 py-3 space-y-5 md:justify-self-end text-center" id="order-form">
+      <form action="{% url 'orders:checkout' %}" method="post" class="max-w-xl px-3 py-3 space-y-5 md:justify-self-end text-center border-1">
         {% csrf_token %}
         <div class="grid grid-cols-1">
-          <div>{{ form.email }}</div>
+          <div>
+            {{ form.email }}
+            {% if form.email.errors %}
+              <div class="text-md text-red-600 mt-1">{{ form.email.errors }}</div>
+            {% endif %}
+          </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div>{{ form.first_name }}</div>
-          <div>{{ form.last_name }}</div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div>
+            {{ form.first_name }}
+            {% if form.first_name.errors %}
+              <div class="text-md text-red-600 mt-1">{{ form.first_name.errors }}</div>
+            {% endif %}
+          </div>
+          <div>
+            {{ form.last_name }}
+            {% if form.last_name.errors %}
+              <div class="text-md text-red-600 mt-1">{{ form.last_name.errors }}</div>
+            {% endif %}
+          </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div>{{ form.country }}</div>
-          <div>{{ form.city }}</div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div>
+            {{ form.country|default_if_none:'-' }}
+            {% if form.country.errors %}
+              <div class="text-md text-red-600 mt-1">{{ form.country.errors }}</div>
+            {% endif %}
+          </div>
+          <div>
+            {{ form.city|default_if_none:'-' }}
+            {% if form.city.errors %}
+              <div class="text-md text-red-600 mt-1">{{ form.city.errors }}</div>
+            {% endif %}
+          </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div>{{ form.address }}</div>
-          <div>{{ form.postal_code }}</div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div>
+            {{ form.address|default_if_none:'-' }}
+            {% if form.address.errors %}
+              <div class="text-md text-red-600 mt-1">{{ form.address.errors }}</div>
+            {% endif %}
+          </div>
+          <div>
+            {{ form.postal_code|default_if_none:'-' }}
+            {% if form.postal_code.errors %}
+              <div class="text-md text-red-600 mt-1">{{ form.postal_code.errors }}</div>
+            {% endif %}
+          </div>
         </div>
 
         <div>

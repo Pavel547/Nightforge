@@ -2,8 +2,8 @@
   <p>First name: {{ user.first_name }}</p>
   <p>Last name: {{ user.last_name }}</p>
   <p>Email: {{ user.email }}</p>
-  <p>Country: {{ user.country }}</p>
-  <p>City: {{ user.city }}</p>
-  <p>Address: {{ user.address }}</p>
-  <p>Postal code: {{ user.postal_code }}</p>
+  <p>Country: {{ user.country|default_if_none:'-' }}</p>
+  <p>City: {{ user.city|default_if_none:'-' }}</p>
+  <p>Address: {{ user.address|default_if_none:'-' }}</p>
+  <p>Postal code: {{ user.postal_code|default_if_none:'-' }}</p>
 </div>

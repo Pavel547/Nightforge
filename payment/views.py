@@ -6,7 +6,7 @@ from django.conf import settings
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from orders.models import Order
+from orders.models import Order, OrderItem
 from cart.views import CartMixin
 from .email import order_confirmation
 
@@ -77,6 +77,16 @@ def stripe_webhook(request):
             order.order_status = 'processing'
             order.payment_status = 'paid'
             order.save()
+            
+            for item in order.items.all():
+                size = item.product_size
+                size.stock -= item.quantity
+                
+                if size.stock <= 0:
+                    size.on_stock = False
+                
+                size.save()
+                
             order_confirmation(order_id)
         except Order.DoesNotExist:
             logger.error(f'Order {order_id} not found')

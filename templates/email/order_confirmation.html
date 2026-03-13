@@ -100,7 +100,7 @@
                   </tr>
                   <tr>
                     <td style="padding: 5px 0; font-size: 13px; color: #555555;">Order status:</td>
-                    <td style="padding: 5px 0; font-size: 13px; color: #1a1a2e; font-weight: 700; text-align: right;">{{ order.status }}</td>
+                    <td style="padding: 5px 0; font-size: 13px; color: #1a1a2e; font-weight: 700; text-align: right;">{{ order.order_status }}</td>
                   </tr>
                   <tr>
                     <td style="padding: 5px 0; font-size: 13px; color: #555555;">Payment:</td>
@@ -145,12 +145,12 @@
                     <tr>
                       <td class="product-img-cell" width="80" style="padding: 12px; background-color: #f0f0f0; vertical-align: middle;">
                         {% if item.product.main_image %}
-                          <img class="product-img" src="{{ item.product.main_image.url }}" width="60" height="60" alt="{{ item.product.name }}" style="display: block; object-fit: cover;" />
+                          <img class="product-img" src="{{ domain }}{{ item.product.main_image.url }}" width="60" height="60" alt="{{ item.product.name }}" style="display: block; object-fit: cover;" />
                         {% endif %}
                       </td>
                       <td style="padding: 12px; vertical-align: middle;">
                         <p style="margin: 0 0 4px 0; font-size: 13px; font-weight: 700; color: #1a1a2e; font-family: Georgia, 'Times New Roman', serif;">{{ item.product.name }}</p>
-                        <p style="margin: 0; font-size: 12px; color: #777777;">Size: {{ item.size }} &nbsp;|&nbsp; Qty: {{ item.quantity }}</p>
+                        <p style="margin: 0; font-size: 12px; color: #777777;">Size: {{ item.product_size.size.name }} &nbsp;|&nbsp; Qty: {{ item.quantity }}</p>
                       </td>
                       <td class="product-price" style="padding: 12px; text-align: right; vertical-align: middle; white-space: nowrap;">
                         <p style="margin: 0; font-size: 13px; font-weight: 700; color: #1a1a2e;">{{ item.total_price }} €</p>

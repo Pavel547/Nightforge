@@ -9,7 +9,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def order_confirmation(order_id):
+def order_confirmation(request, order_id):
     order = Order.objects.prefetch_related(
         Prefetch(
             'items',
@@ -19,6 +19,8 @@ def order_confirmation(order_id):
         )
     ).get(id=order_id)
     
+    domain = request.build_absolute_uri('/')[:-1]
+    
     text_content = render_to_string(
         'email/order_confirmation.txt',
         context={'order': order}
@@ -26,7 +28,7 @@ def order_confirmation(order_id):
     
     html_content = render_to_string(
         'email/order_confirmation.html',
-        context={'order': order}
+        context={'order': order, 'domain': domain}
     )
     
     try:

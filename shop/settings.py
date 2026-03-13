@@ -157,3 +157,40 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[{levelname}] {asctime} {message}',
+            'style' : '{',
+            'datefmt': '%d-%m-%Y %H:%M',
+        },
+    },
+    'handlers': {
+        'orders': {
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs/orders.log',
+            'formatter': 'verbose',
+        },
+        'payment': {
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs/payment.log',
+            'formatter': 'verbose',
+        }
+    },
+    'loggers': {
+        'orders': {
+            'handlers': ['orders'],
+            'level': os.getenv('DJANGO_LOG_LEVEL'),
+            'propagate': False,
+        },
+        'payment': {
+            'handlers': ['payment'],
+            'level': os.getenv('DJANGO_LOG_LEVEL'),
+            'propagate': False,
+        }
+    }
+}

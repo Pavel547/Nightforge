@@ -6,15 +6,40 @@
       {% csrf_token %}
       <input type="hidden" name="next" value="{{ request.GET.next }}" />
       <div class="grid grid-cols-1 mb-5">
-        <div>{{ form.email }}</div>
+        <div>
+          {{ form.email }}
+          {% if form.email.errors %}
+            <div class="text-md text-red-600 mt-1">{{ form.email.errors }}</div>
+          {% endif %}
+        </div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 lg:gap-10 mb-5">
-        <div>{{ form.first_name }}</div>
-        <div>{{ form.last_name }}</div>
+        <div>
+          {{ form.first_name }}
+          {% if form.first_name.errors %}
+            <div class="text-md text-red-600 mt-1">{{ form.first_name.errors }}</div>
+          {% endif %}
+        </div>
+        <div>
+          {{ form.last_name }}
+          {% if form.last_name.errors %}
+            <div class="text-md text-red-600 mt-1">{{ form.last_name.errors }}</div>
+          {% endif %}
+        </div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 lg:gap-10 mb-5">
-        <div>{{ form.password1 }}</div>
-        <div>{{ form.password2 }}</div>
+        <div>
+          {{ form.password1 }}
+          {% if form.password1.errors %}
+            <div class="text-md text-red-600 mt-1">{{ form.password1.errors }}</div>
+          {% endif %}
+        </div>
+        <div>
+          {{ form.password2 }}
+          {% if form.password2.errors %}
+            <div class="text-md text-red-600 mt-1">{{ form.password2.errors }}</div>
+          {% endif %}
+        </div>
       </div>
       <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 sm:gap-2 md:gap-5 lg:gap-10">
         <button type="submit" class="px-3 py-3 border-2 border-gray-900 text-gray-900 text-xl hover:text-gray-200 hover:bg-gray-900 transition-colors duration-700">Create Account</button>

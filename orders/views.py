@@ -20,7 +20,7 @@ class CheckoutView(CartMixin, View):
         logger.debug('Render checkoutpage')
         
         if cart.total_items == 0:
-            logger.warning('Cart is empty redirect to cart page')
+            logger.warning(f'Cart for {request.user.email} is empty redirect to cart page')
             return redirect('cart:details')
         
         form = OrderForm(user=request.user)
@@ -41,11 +41,11 @@ class CheckoutView(CartMixin, View):
         payment_provider = request.POST.get('payment_provider')
         
         if cart.total_items == 0:
-            logger.warning('Cart is empty redirect to cart page')
+            logger.error('Cart is empty redirect to cart page')
             return redirect('cart:details')
         
         if not payment_provider or payment_provider != 'stripe': #For more payment providers use not in [some payment provider]
-            logger.warning('Invalid or missing payment provider')
+            logger.error(f'Invalid or missing payment provider {payment_provider}')
             
             context = {
                 'cart': cart,
@@ -55,7 +55,7 @@ class CheckoutView(CartMixin, View):
                 ).order_by('-added_at'),
                 'form': OrderForm(user=request.user)
             }
-            
+            messages.error(request, 'Something went wrong with payment. Please try again.')
             return render(request, 'orders/checkout.html', context)
         
         form_data = request.POST.copy()
@@ -93,12 +93,12 @@ class CheckoutView(CartMixin, View):
                 )
             try:
                 if payment_provider == 'stripe':
-                    logger.debug(f'Create stripe checkout session for {order.id}')
+                    logger.debug(f'Create stripe checkout session for order {order.id}')
                     checkout_session = create_stripe_checkout_session(order, request)
                     
                     return redirect(checkout_session.url)
             except Exception as e:
-                logger.error(f'Payment creating error {str(e)}', exc_info=True)
+                logger.error(f'Payment creating error. for order #{order.id}', exc_info=True)
                 context = {
                     'cart': cart,
                     'form': form,
@@ -107,7 +107,7 @@ class CheckoutView(CartMixin, View):
                     ).order_by('-added_at'),
                     'cart_total_price': cart.subtotal, 
                 }
-                messages.error(request, f'Payment processing error {e}')
+                messages.error(request, f'Payment processing error')
                 return render(request, 'orders/checkout.html', context)
         else:
             logger.error('Form validation error')
@@ -120,6 +120,7 @@ class CheckoutView(CartMixin, View):
                 ).order_by('-added_at'),
                 'cart_total_price': cart.subtotal
             }
+            messages.error(request, 'Incorrect form data')
             return render(request, 'orders/checkout.html', context)
 
 class UserOrderListView(ListView):
