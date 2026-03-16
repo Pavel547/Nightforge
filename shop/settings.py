@@ -175,12 +175,12 @@ LOGGING = {
     'handlers': {
         'orders': {
             'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'logs/orders.log',
+            'filename': os.path.join(BASE_DIR, 'logs/orders.log'),
             'formatter': 'verbose',
         },
         'payment': {
             'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'logs/payment.log',
+            'filename': os.path.join(BASE_DIR, 'logs/payment.log'),
             'formatter': 'verbose',
         }
     },
