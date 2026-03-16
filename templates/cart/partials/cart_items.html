@@ -46,11 +46,11 @@
   <div class="mt-4 lg:mt-8 flex justify-center lg:justify-end space-x-2 mb-2">
     <form action="{% url 'cart:clear' %}" method="post">
       {% csrf_token %}
-      <button type="submit" class="px-1 py-1 border-3 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-gray-50 hover:cursor-pointer transition-colors duration-700 text-3xl">CLEAR</button>
+      <button type="submit" class="px-1 py-1 border-3 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-gray-50 hover:cursor-pointer transition-colors duration-700 text-3xl active:text-gray-50 active:bg-gray-900">CLEAR</button>
     </form>
 
     <form action="{% url 'orders:checkout' %}">
-      <button type="submit" class="px-1 py-1 border-3 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-gray-50 hover:cursor-pointer transition-colors duration-700 text-3xl">Checkout</button>
+      <button type="submit" class="px-1 py-1 border-3 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-gray-50 hover:cursor-pointer transition-colors duration-700 text-3xl active:text-gray-50 active:bg-gray-900">Checkout</button>
     </form>
   </div>
 </div>

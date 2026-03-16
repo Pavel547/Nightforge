@@ -4,14 +4,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <!-- Tailwindcss -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- CSS style -->
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
     <title>
       {% block title %}
-        ShopName
+        Nightforge
       {% endblock %}
     </title>
   </head>
@@ -23,7 +22,7 @@
           <div class="toast-item flex items-center gap-3 px-4 py-3 border text-xl font-mono{% if message.tags == 'success' %}
               bg-gray-900 border-gray-500 text-gray-50
             {% elif message.tags == 'error' %}
-                  bg-gray-900 border-red-700 text-red-400
+              bg-gray-900 border-red-700 text-red-400
             {% else %}
               bg-gray-900 border-gray-600 text-gray-50
             {% endif %}transition-opacity duration-500">

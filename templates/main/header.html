@@ -1,7 +1,7 @@
 <header>
   <nav class="flex justify-between items-center my-4 px-4 sm:px-6 md:px-8">
     <div>
-      <a href="{% url 'main:index' %}"><h1 class="text-gray-900 text-7xl hover:text-gray-400 active:text-gray-400 transition-colors duration-700">ShopName</h1></a>
+      <a href="{% url 'main:index' %}"><h1 class="text-gray-900 text-7xl hover:text-gray-400 active:text-gray-400 transition-colors duration-700">Nightforge</h1></a>
     </div>
     <!-- Desktop menu -->
     <div>
@@ -10,7 +10,7 @@
           <a href="{% url 'main:catalog_all' %}" class="active:text-gray-400 text-gray-900 hover:text-gray-400 transition-colors duration-700">shop</a>
         </li>
         <li>
-          <a href="#" class="active:text-gray-400 text-gray-900 hover:text-gray-400 transition-colors duration-400">contact</a>
+          <a href="{% url 'main:contact_us' %}" class="active:text-gray-400 text-gray-900 hover:text-gray-400 transition-colors duration-400">contact</a>
         </li>
         {% if user.is_authenticated %}
           <li>

@@ -23,7 +23,7 @@ def order_confirmation(request, order_id):
     
     text_content = render_to_string(
         'email/order_confirmation.txt',
-        context={'order': order}
+        context={'order': order,}
     )
     
     html_content = render_to_string(

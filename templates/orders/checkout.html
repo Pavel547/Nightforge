@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="h-full mx-8 flex flex-col justify-center items-center">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-10">
-      <form action="{% url 'orders:checkout' %}" method="post" class="max-w-xl px-3 py-3 space-y-5 md:justify-self-end text-center border-1">
+  <div class="md:h-full mt-5 md:mt-0 mx-8 flex flex-col justify-center items-center">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-10">
+      <form action="{% url 'orders:checkout' %}" method="post" class="max-w-xl px-3 py-3 space-y-5 lg:justify-self-end text-center border-1">
         {% csrf_token %}
         <div class="grid grid-cols-1">
           <div>
@@ -13,7 +13,7 @@
             {% endif %}
           </div>
         </div>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
             {{ form.first_name }}
             {% if form.first_name.errors %}
@@ -27,7 +27,7 @@
             {% endif %}
           </div>
         </div>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
             {{ form.country|default_if_none:'-' }}
             {% if form.country.errors %}
@@ -41,7 +41,7 @@
             {% endif %}
           </div>
         </div>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
             {{ form.address|default_if_none:'-' }}
             {% if form.address.errors %}
@@ -55,19 +55,18 @@
             {% endif %}
           </div>
         </div>
-
         <div>
           <p class="text-xl text-gray-900">Choes payment provider</p>
-          <button name="payment_provider" value="stripe" class="text-2xl border-3 px-10 py-2 border-gray-900 hover:bg-gray-900 hover:text-gray-50 transition-colors duration-700">STRIPE</button>
+          <button name="payment_provider" value="stripe" class="text-2xl border-3 px-10 py-2 border-gray-900 hover:bg-gray-900 hover:text-gray-50 active:text-gray-50 active:bg-gray-900 transition-colors duration-700">STRIPE</button>
         </div>
       </form>
-      <div class="border border-1 border-gray-900 max-w-md px-5 py-2">
+      <div class="border border-1 border-gray-900 w-full lg:max-w-md px-5 py-2 overflow-y-auto max-h-50 sm:max-h-70 md:max-h-96">
         <div class="flex justify-between text-xl">
           <p>Total price: {{ cart_total_price }}</p>
           <p>Total quantity: {{ total_items }}</p>
         </div>
         {% for item in cart_items %}
-          <div class="flex gap-10">
+          <div class="flex gap-10 items-center">
             <div>
               <img src="{{ item.product.main_image.url }}" alt="{{ item.product.name }} image" class="max-w-35 md:max-w-50" />
             </div>
@@ -83,7 +82,7 @@
       </div>
     </div>
     <div class="text-center mt-10 md:mt-5">
-      <a href="{% url 'cart:details' %}" class="text-xl border-3 border-gray-900 px-10 py-1 hover:bg-gray-900 hover:text-gray-50 transition-colors duration-700">BACK</a>
+      <a href="{% url 'cart:details' %}" class="text-xl border-3 border-gray-900 px-10 py-1 hover:bg-gray-900 hover:text-gray-50 active:text-gray-50 active:bg-gray-900 transition-colors duration-700">BACK</a>
     </div>
   </div>
 {% endblock %}

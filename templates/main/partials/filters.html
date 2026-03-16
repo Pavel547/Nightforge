@@ -9,16 +9,15 @@
           {% if not current_category %}
             text-xl lg:text-2xl text-gray-400
           {% else %}
-            text-xl lg:text-2xl text-gray-900 hover:text-gray-400 transition-colors duration-700
+            text-xl lg:text-2xl text-gray-900 hover:text-gray-400 active:text-gray-400 transition-colors duration-700
           {% endif %}">all</a>
         </li>
         {% for category in categories %}
           <li>
-            <a href="{% url 'main:catalog' category.slug %}" class="
-            {% if current_category == category %}
+            <a href="{% url 'main:catalog' category.slug %}" class="{% if current_category == category %}
                 text-xl lg:text-2xl text-gray-400
               {% else %}
-                text-xl lg:text-2xl text-gray-900 hover:text-gray-400 transition-colors duration-700
+                text-xl lg:text-2xl text-gray-900 hover:text-gray-400 active:text-gray-400 transition-colors duration-700
               {% endif %}
             ">{{ category.name }}</a>
           </li>

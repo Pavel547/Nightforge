@@ -127,6 +127,7 @@ class UserOrderListView(ListView):
     model = Order
     template_name = 'orders/user_orders.html'
     context_object_name = 'orders'
+    paginate_by = 10
     
     def get_queryset(self):
         qs = super().get_queryset()

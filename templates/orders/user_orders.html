@@ -5,23 +5,43 @@
 {% endblock %}
 
 {% block content %}
-  <div class="flex flex-col md:flex-row mx-4 lg:mx-8 gap-8">
+  <div class="flex flex-col md:flex-row mx-4 md:mx-8 gap-8">
     {% include 'users/partials/menu.html' %}
 
     {% if orders %}
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
-        {% for order in orders %}
-          <a href="{% url 'orders:order' order.id %}">
-            <div class="text-xl space-y-1 border-2 border-gray-900 px-2 py-2 hover:border-gray-400 active:border-gray-400 transition-colors duration-300">
-              <p>Order number: {{ order.id }}</p>
-              <p>Order status: {{ order.order_status|default_if_none:'-' }}</p>
-              <p>Payment status: {{ order.payment_status|default_if_none:'-' }}</p>
-              <p>Total items: {{ order.total_items }}</p>
-              <p>Total price: {{ order.total_price }}</p>
-              <p>Last update: {{ order.updated_at|date:'d M Y' }}</p>
-            </div>
-          </a>
-        {% endfor %}
+      <div class="flex flex-col md:w-full">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
+          {% for order in orders %}
+            <a href="{% url 'orders:order' order.id %}">
+              <div class="text-xl space-y-1 border-2 border-gray-900 px-2 py-2 hover:border-gray-400 active:border-gray-400 transition-colors duration-300">
+                <p>Order number: {{ order.id }}</p>
+                <p>Order status: {{ order.get_order_status_display|default_if_none:'-' }}</p>
+                <p>Payment status: {{ order.get_payment_status_display|default_if_none:'-' }}</p>
+                <p>Total items: {{ order.total_items }}</p>
+                <p>Total price: {{ order.total_price }}</p>
+                <p>Last update: {{ order.updated_at|date:'d M Y' }}</p>
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+        <div class="pagination flex justify-center mt-5">
+          <span class="step-links">
+            {% if page_obj.has_previous %}
+              <a href="?page=1">&laquo; first</a>
+              <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}<span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+            {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}">next</a>
+              <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+          </span>
+        </div>
+      </div>
+    {% else %}
+      <div class="w-full flex justify-center items-center">
+        <div>
+          <p class="border-gray-900 text-2xl md:text-3xl">No orders have been placed yet.</p>
+        </div>
       </div>
     {% endif %}
   </div>

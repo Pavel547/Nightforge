@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView, ListView, DetailView
 from django.db.models import Q
+from django.conf import settings
 from .models import Category, Product, Size
 
 
@@ -11,6 +12,7 @@ class CatalogView(ListView):
     template_name = 'main/catalog.html'
     model = Product
     context_object_name = 'products'
+    paginate_by = 10
     
     # Filtration functions for get_queryset method
     FILTER_FUNC = {
@@ -44,6 +46,12 @@ class CatalogView(ListView):
             if value == param:
                 qs = sort_func(qs)
         
+        query = self.request.GET.get('q')     
+        if query:
+            qs = qs.filter(
+                Q(name__icontains=query) | Q(description__icontains=query)
+            )
+        
         return qs
     
     
@@ -61,6 +69,8 @@ class CatalogView(ListView):
         
         for param in self.FILTER_FUNC.keys():
             context[param] = self.request.GET.get(param, '')
+        
+        context['q'] = self.request.GET.get('q', '')
                 
         return context
         
@@ -72,11 +82,20 @@ class ProductDetails(DetailView):
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
     
-    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         product = self.get_object()
         context['current_category'] = product.category.slug
         context['similar_products'] = Product.objects.filter(
             category=product.category).exclude(id=product.id)[:4]
+        return context
+
+
+class ContactView(TemplateView):
+    template_name = 'main/contact.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['email'] = settings.EMAIL_HOST_USER
+
         return context

@@ -13,9 +13,9 @@
         <div class="text-xl md:space-y-1 pl-2 md:pl-5">
           <p>Order number: {{ order.id }}</p>
           <p>User email: {{ order.email }}</p>
-          <p>Order status: {{ order.order_status|default_if_none:'-' }}</p>
-          <p>Payment status: {{ order.payment_status }}</p>
-          <p>Payment provider: {{ order.payment_provider }}</p>
+          <p>Order status: {{ order.get_order_status_display }}</p>
+          <p>Payment status: {{ order.get_payment_status_display }}</p>
+          <p>Payment provider: {{ order.get_payment_provider_display }}</p>
           <p>Total price: {{ order.total_price }} €</p>
           <p>Total items: {{ order.total_items }}</p>
           <p>Last update: {{ order.updated_at|date:'d M Y' }}</p>

@@ -6,17 +6,26 @@
 {% block content %}
   <!-- Mobile menu -->
   <div class="md:hidden mx-4">
-    <button id="mobile-filter-btn" class="text-2xl text-gray-900 uppercase cursor-pointer flex items-center">
-      filters<svg id="mobile-filter-arrow" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-      </svg>
-    </button>
+    <div class="flex justify-between">
+      <button id="mobile-filter-btn" class="text-2xl text-gray-900 uppercase cursor-pointer flex items-center">
+        filters<svg id="mobile-filter-arrow" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      <form action="{% url 'main:catalog_all' %}" method="get">
+        <input type="text" name="q" value="{{ q|default:'' }}" placeholder="Search" class="w-50 text-xl text-gray-900 border-1 border-gray-900 focus:outline-none focus:border-gray-400" />
+      </form>
+    </div>
     {% include 'main/partials/filters.html' with menu_id='mobile-filter-menu' %}
   </div>
   <div class="flex mx-4 my-2 md:mx-8 md:my-4">
     <!-- Desktop menu -->
     <div class="hidden md:flex flex-col mr-3">
       <div>
+        <!-- Search -->
+        <form action="{% url 'main:catalog_all' %}" method="get">
+          <input type="text" name="q" value="{{ q|default:'' }}" placeholder="Search" class="w-50 text-xl text-gray-900 border-1 border-gray-900 focus:outline-none focus:border-gray-400" />
+        </form>
         <!-- Categories -->
         <div class="space-y-1">
           {% if categories %}
@@ -62,6 +71,18 @@
     <div>
       {% if products %}
         {% include 'main/partials/items_catalog.html' %}
+        <div class="pagination flex justify-center">
+          <span class="step-links">
+            {% if page_obj.has_previous %}
+              <a href="?page=1">&laquo; first</a>
+              <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}<span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+            {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}">next</a>
+              <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+          </span>
+        </div>
       {% else %}
         <p>NO AVALIBLE PRODUCTS</p>
       {% endif %}

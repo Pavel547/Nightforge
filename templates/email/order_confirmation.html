@@ -69,7 +69,6 @@
                 <p style="margin: 8px 0 0 0; font-size: 11px; letter-spacing: 4px; color: #555555; text-transform: uppercase;">order confirmation</p>
               </td>
             </tr>
-
             <!-- Order confirmed title -->
             <tr>
               <td align="center" class="confirmed-pad" style="padding: 36px 40px 10px 40px;">
@@ -77,7 +76,6 @@
                 <p style="margin: 12px 0 0 0; font-size: 13px; color: #555555; line-height: 1.7;">Thank you for your purchase. Your order is being prepared and will be shipped shortly.</p>
               </td>
             </tr>
-
             <!-- Divider -->
             <tr>
               <td class="section-pad" style="padding: 20px 40px;">
@@ -88,7 +86,6 @@
                 </table>
               </td>
             </tr>
-
             <!-- Order Information -->
             <tr>
               <td class="section-pad" style="padding: 0 40px 20px 40px;">
@@ -100,11 +97,11 @@
                   </tr>
                   <tr>
                     <td style="padding: 5px 0; font-size: 13px; color: #555555;">Order status:</td>
-                    <td style="padding: 5px 0; font-size: 13px; color: #1a1a2e; font-weight: 700; text-align: right;">{{ order.order_status }}</td>
+                    <td style="padding: 5px 0; font-size: 13px; color: #1a1a2e; font-weight: 700; text-align: right;">{{ order.get_order_status_display }}</td>
                   </tr>
                   <tr>
-                    <td style="padding: 5px 0; font-size: 13px; color: #555555;">Payment:</td>
-                    <td style="padding: 5px 0; font-size: 13px; color: #1a1a2e; font-weight: 700; text-align: right;">{{ order.payment_status }}</td>
+                    <td style="padding: 5px 0; font-size: 13px; color: #555555;">Payment status:</td>
+                    <td style="padding: 5px 0; font-size: 13px; color: #1a1a2e; font-weight: 700; text-align: right;">{{ order.get_payment_status_display }}</td>
                   </tr>
                   <tr>
                     <td style="padding: 5px 0; font-size: 13px; color: #555555;">Date:</td>

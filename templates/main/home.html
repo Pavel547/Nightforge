@@ -1,13 +1,13 @@
 <div class="h-full grid grid-cols-1 gap-5 justify-items-center items-center">
   <div>
-    <h1 class="text-7xl lg:text-9xl font-bold text-gray-900">ShopName</h1>
+    <h1 class="text-7xl lg:text-9xl font-bold text-gray-900">Nightforge</h1>
     <nav class="text-2xl text-gray-900">
       <ul class="space-x-2 flex justify-center">
         <li>
           <a href="{% url 'main:catalog_all' %}" class="active:text-gray-400 hover:text-gray-400 transition-colors duration-700">shop</a>
         </li>
         <li>
-          <a href="#" class="active:text-gray-400 hover:text-gray-400 transition-colors duration-700">contact</a>
+          <a href="{% url 'main:contact_us' %}" class="active:text-gray-400 hover:text-gray-400 transition-colors duration-700">contact</a>
         </li>
         {% if user.is_authenticated %}
           <li>

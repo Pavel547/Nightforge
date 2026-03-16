@@ -87,7 +87,7 @@ def stripe_webhook(request):
                 
                 size.save()
                 
-            order_confirmation(order_id)
+            order_confirmation(request, order_id)
         except Order.DoesNotExist:
             logger.error(f'Order {order_id} not found')
             return HttpResponse(status=400)
