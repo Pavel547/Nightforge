@@ -88,6 +88,7 @@ def edit_account_details(request):
         form = CustomUserUpdateForm(instance=request.user)
     return render(request, 'users/edit_account_details.html', {'form': form})
 
+@login_required(login_url='/users/login')
 def logout_view(request):
     if request.method == 'POST':
         logout(request)

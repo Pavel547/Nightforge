@@ -102,11 +102,11 @@ class AddToCartView(CartMixin, View):
                 
         cart_item = cart.add_item(product, product_size, quantity)
         
-        messages.info(request, f'{product.name} succesfully add to cart')
+        messages.success(request, f'{product.name} succesfully add to cart')
         
-        return redirect('cart:details')
+        return redirect('main:product', product.slug)
         
-        
+    
 class UpdateCartItemView(CartMixin, View):
     @transaction.atomic
     def post(self, request, item_id):
@@ -130,8 +130,8 @@ class UpdateCartItemView(CartMixin, View):
             cart_item.quantity = quantity
             cart_item.save()
             return redirect('cart:details')
-    
-    
+
+
 class DeleteCartItemView(CartMixin, View):
     def post(self, request, item_id):
         cart = self.get_cart(request)

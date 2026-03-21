@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View, ListView, DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
@@ -123,11 +124,12 @@ class CheckoutView(CartMixin, View):
             messages.error(request, 'Incorrect form data')
             return render(request, 'orders/checkout.html', context)
 
-class UserOrderListView(ListView):
+class UserOrderListView(LoginRequiredMixin, ListView):
     model = Order
     template_name = 'orders/user_orders.html'
     context_object_name = 'orders'
     paginate_by = 10
+    login_url = '/users/login'
     
     def get_queryset(self):
         qs = super().get_queryset()
@@ -135,10 +137,11 @@ class UserOrderListView(ListView):
 
         return qs
     
-class OrderDetailView(DetailView):
+class OrderDetailView(LoginRequiredMixin, DetailView):
     model = Order
     template_name = 'orders/order_detail.html'
     context_object_name = 'order'
+    login_url = '/users/login'
     
     def get_queryset(self):
         qs = super().get_queryset()
