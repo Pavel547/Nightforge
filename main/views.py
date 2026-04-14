@@ -2,9 +2,10 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView, ListView, DetailView
 from django.db.models import Q
 from django.conf import settings
-from rest_framework import viewsets, filters, permissions
-from .permissions import IsAdminOrReadOnly
+from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
+from .filters import ProductFilter
+from .permissions import IsAdminOrReadOnly
 from .serializers import ProductSerializer, ProductDetailSerializer, CategorySerializer
 from .models import Category, Product, Size
 
@@ -110,9 +111,9 @@ class ProductViewSet(viewsets.ModelViewSet):
         DjangoFilterBackend
     ]
     search_fields = ['id', 'name', 'description']
-    order_fields = ['price', 'created_at']
-    filterset_fields = ['category',]
-    permission_classes = [IsAdminOrReadOnly, ]
+    ordering_fields = ['price', 'created_at']
+    filterset_class = ProductFilter
+    permission_classes = [IsAdminOrReadOnly]
     
     def get_serializer_class(self):
         if self.action == 'list':
