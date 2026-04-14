@@ -2,6 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout
 from django.utils.http import url_has_allowed_host_and_scheme
+from rest_framework.views import APIView
+from rest_framework import permissions, status
+from rest_framework.response import Response
+from .serializers import RegisterSerializer
 from .forms import CustomUserCreationForm, CustomUserLoginForm, CustomUserUpdateForm
 from .models import CustomUser
 from cart.views import CartMixin
@@ -94,4 +98,15 @@ def logout_view(request):
         logout(request)
         return redirect('main:index')
     return render(request, 'users/logout_confirm.html')
+    
+class API_Register(APIView):
+    permission_classes = [permissions.AllowAny]
+    
+    def post(self, request):
+        serializer = RegisterSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            login(request, user)
+            return Response(serializer.data, status.HTTP_201_CREATED)
+        return Response(serializer.data, status.HTTP_400_BAD_REQUEST)
         

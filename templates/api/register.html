@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Django REST framework</title>
+    <link rel="stylesheet" href="{% static 'rest_framework/css/bootstrap.min.css' %}" />
+  </head>
+  <body>
+    <div class="container" style="margin-top: 100px; max-width: 400px;">
+      <h2>Django REST framework</h2>
+      <form method="POST">
+        {% csrf_token %}
+        <label>Email:</label>
+        <input type="email" name="email" class="form-control" />
+        <label>First name:</label>
+        <input type="text" name="first_name" class="form-control" />
+        <label>Last name:</label>
+        <input type="text" name="last_name" class="form-control" />
+        <label>Password1:</label>
+        <input type="password" name="password1" class="form-control" />
+        <label>Password2:</label>
+        <input type="password" name="password2" class="form-control" />
+        <button type="submit" class="btn btn-primary" style="margin-top: 10px; width: 100%;">Register</button>
+        {% if errors %}
+          <p style="color: red;">{{ errors }}</p>
+        {% endif %}
+      </form>
+    </div>
+  </body>
+</html>

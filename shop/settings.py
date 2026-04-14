@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cloudinary_storage',
     'cloudinary',
+    'rest_framework',
+    'django_filters',
     
     'users',
     'main',
@@ -224,4 +226,13 @@ LOGGING = {
             'propagate': False,
         }
     }
+}
+
+LOGIN_REDIRECT_URL = '/api/products/'
+
+# DRF 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ]
 }

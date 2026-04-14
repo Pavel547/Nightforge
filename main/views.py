@@ -2,6 +2,10 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView, ListView, DetailView
 from django.db.models import Q
 from django.conf import settings
+from rest_framework import viewsets, filters, permissions
+from .permissions import IsAdminOrReadOnly
+from django_filters.rest_framework import DjangoFilterBackend
+from .serializers import ProductSerializer, ProductDetailSerializer, CategorySerializer
 from .models import Category, Product, Size
 
 
@@ -55,7 +59,6 @@ class CatalogView(ListView):
         
         return qs
     
-    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
@@ -73,8 +76,7 @@ class CatalogView(ListView):
         
         context['q'] = self.request.GET.get('q', '')
                 
-        return context
-        
+        return context  
 
 class ProductDetails(DetailView):
     model = Product
@@ -91,7 +93,6 @@ class ProductDetails(DetailView):
             category=product.category).exclude(id=product.id)[:4]
         return context
 
-
 class ContactView(TemplateView):
     template_name = 'main/contact.html'
 
@@ -100,3 +101,25 @@ class ContactView(TemplateView):
         context['email'] = settings.EMAIL_HOST_USER
 
         return context
+    
+class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    filter_backends = [
+        filters.SearchFilter,
+        filters.OrderingFilter,
+        DjangoFilterBackend
+    ]
+    search_fields = ['id', 'name', 'description']
+    order_fields = ['price', 'created_at']
+    filterset_fields = ['category',]
+    permission_classes = [IsAdminOrReadOnly, ]
+    
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return ProductSerializer
+        return ProductDetailSerializer
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [IsAdminOrReadOnly]
