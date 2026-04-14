@@ -151,4 +151,4 @@ SMTP (Gmail) can be used for development purposes.
 ---
 
 ## 📄 License
-This project is for educational purposes.
+This project is for CV.
