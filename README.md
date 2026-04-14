@@ -42,6 +42,11 @@ to a shopping cart, and securely place orders online with payment integration.
 
 ---
 
+## 🎨 Design
+UI design inspired by a free [Figma template](https://www.figma.com/design/Uz5XzkAousMHKxFudsJ5Mz/UX---clothing-E-shop---Streetwear-style--Community-?node-id=7-3&t=cs8DU3xKoSRnrt8k-0).
+
+---
+
 ## 🌐 Live Demo
 https://nightforge.onrender.com/
 
@@ -129,12 +134,21 @@ python manage.py collectstatic
 ```bash
 python manage.py runserver
 ```
+---
 
 ## ⚠️ Notes
 To send emails in production, you need a verified domain for Resend.
 SMTP (Gmail) can be used for development purposes.
 
+---
+
 ## 📸 Screenshots
+<img width="1915" height="920" alt="obrazek" src="https://github.com/user-attachments/assets/b11be553-e1ec-4918-80a8-80728c7580ed" />
+<img width="1912" height="1079" alt="obrazek" src="https://github.com/user-attachments/assets/5b5b8b3f-f6e8-45d7-987f-fe79aa9d494b" />
+<img width="1917" height="914" alt="obrazek" src="https://github.com/user-attachments/assets/ee61e3c6-4a23-4df4-8b37-e91061f7f599" />
+<img width="1918" height="915" alt="obrazek" src="https://github.com/user-attachments/assets/e391885f-d824-4804-b645-0782297bc9d4" />
+
+---
 
 ## 📄 License
 This project is for educational purposes.
