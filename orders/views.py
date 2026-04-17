@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.db.models import Prefetch
+from rest_framework import viewsets, permissions, mixins
+from . import serializers
 from cart.views import CartMixin
 from .forms import OrderForm
 from .models import Order, OrderItem
@@ -151,3 +153,31 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
                 'product', 'product_size__size')))
 
         return qs
+
+class OrderViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet):
+    
+    permission_classes = [
+        permissions.IsAuthenticated, 
+    ]
+    
+    def get_queryset(self):
+        if self.request.user.is_staff:
+            return Order.objects.all()
+        return Order.objects.filter(user=self.request.user)
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return serializers.OrderSerializer
+        
+        if self.action == 'create':
+            return serializers.OrderDetailSerializer 
+        
+        if self.action == 'retrieve':
+            return serializers.OrderDetailSerializer
+        
+        if self.request.user.is_staff:
+            return serializers.OrderDetailSerializer
+        return serializers.OrderSerializer

@@ -27,7 +27,7 @@ class SizeDetailSerializer(serializers.ModelSerializer):
             'name': {'validators': []}
         }
 
-class ProductDetailSizeSerializer(serializers.ModelSerializer):
+class ProductSizeDetailSerializer(serializers.ModelSerializer):
     size = SizeDetailSerializer()
 
     class Meta:
@@ -43,7 +43,7 @@ class CategoryDetailSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 class ProductDetailSerializer(serializers.ModelSerializer):
-    product_sizes = ProductDetailSizeSerializer(many=True, required=False)
+    product_sizes = ProductSizeDetailSerializer(many=True, required=False)
     category = CategoryDetailSerializer(read_only=True)
     category_id = serializers.PrimaryKeyRelatedField(
         queryset=Category.objects.all(), 
