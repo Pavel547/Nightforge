@@ -5,7 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.db.models import Prefetch
-from rest_framework import viewsets, permissions, mixins
+from rest_framework import viewsets, permissions, mixins, filters
+from django_filters.rest_framework import DjangoFilterBackend
 from . import serializers
 from cart.views import CartMixin
 from .forms import OrderForm
@@ -162,6 +163,16 @@ class OrderViewSet(
     permission_classes = [
         permissions.IsAuthenticated, 
     ]
+    filter_backends = [
+        filters.SearchFilter,
+        filters.OrderingFilter,
+        DjangoFilterBackend
+    ]
+    ordering_fields = ['created_at', 'updated_at', 
+                       'total_price']
+    ordering = ['-created_at']
+    search_fields = ['email', 'id']
+    filterset_fields = ['order_status', 'payment_provider', 'payment_status']
     
     def get_queryset(self):
         if self.request.user.is_staff:
@@ -169,15 +180,22 @@ class OrderViewSet(
         return Order.objects.filter(user=self.request.user)
 
     def get_serializer_class(self):
-        if self.action == 'list':
+        if self.action == 'list' and self.request.user.is_staff:
+            return serializers.AdminOrderSerializer
+        elif self.action == 'list':
             return serializers.OrderSerializer
         
-        if self.action == 'create':
-            return serializers.OrderDetailSerializer 
-        
-        if self.action == 'retrieve':
+        if self.action == 'retrieve' and self.request.user.is_staff:
+            return serializers.OrderAdminDetailSerializer
+        elif self.action == 'retrieve':
             return serializers.OrderDetailSerializer
         
-        if self.request.user.is_staff:
-            return serializers.OrderDetailSerializer
         return serializers.OrderSerializer
+    
+    def filter_queryset(self, queryset):
+        if self.request.user.is_staff:
+            self.search_fields = ['id', 'email']
+        else:
+            self.search_fields = ['id']
+
+        return super().filter_queryset(queryset)
