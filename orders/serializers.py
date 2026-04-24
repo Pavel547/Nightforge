@@ -58,7 +58,6 @@ class OrderDetailSerializer(serializers.ModelSerializer):
 class OrderAdminDetailSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(
         queryset=CustomUser.objects.all(),
-        source='user.email'
     )
     items = OrderItemSerializer(many=True)
 

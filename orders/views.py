@@ -8,6 +8,7 @@ from django.db.models import Prefetch
 from rest_framework import viewsets, permissions, mixins, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from . import serializers
+from .filters import CustomSearchFilter
 from cart.views import CartMixin
 from .forms import OrderForm
 from .models import Order, OrderItem
@@ -164,7 +165,7 @@ class OrderViewSet(
         permissions.IsAuthenticated, 
     ]
     filter_backends = [
-        filters.SearchFilter,
+        CustomSearchFilter,
         filters.OrderingFilter,
         DjangoFilterBackend
     ]
@@ -172,7 +173,8 @@ class OrderViewSet(
                        'total_price']
     ordering = ['-created_at']
     search_fields = ['email', 'id']
-    filterset_fields = ['order_status', 'payment_provider', 'payment_status']
+    filterset_fields = ['order_status', 'payment_provider', 
+                        'payment_status']
     
     def get_queryset(self):
         if self.request.user.is_staff:
@@ -191,11 +193,3 @@ class OrderViewSet(
             return serializers.OrderDetailSerializer
         
         return serializers.OrderSerializer
-    
-    def filter_queryset(self, queryset):
-        if self.request.user.is_staff:
-            self.search_fields = ['id', 'email']
-        else:
-            self.search_fields = ['id']
-
-        return super().filter_queryset(queryset)
