@@ -178,8 +178,24 @@ class OrderViewSet(
     
     def get_queryset(self):
         if self.request.user.is_staff:
-            return Order.objects.all()
-        return Order.objects.filter(user=self.request.user)
+            return Order.objects.prefetch_related(
+                Prefetch(
+                    'items',
+                    queryset=OrderItem.objects.select_related(
+                        'product', 'product_size__size'
+                    )
+                )
+            )
+        return Order.objects.filter(
+            user=self.request.user
+            ).prefetch_related(
+                Prefetch(
+                    'items', 
+                    queryset=OrderItem.objects.select_related(
+                        'product', 'product_size__size'
+                    )
+                )
+            )
 
     def get_serializer_class(self):
         if self.action == 'list' and self.request.user.is_staff:
