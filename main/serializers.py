@@ -69,13 +69,9 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     
     def update(self, instance, validated_data):
         product_sizes = validated_data.pop('product_sizes', None)
-        instance.name = validated_data.get('name', instance.name)
-        instance.category = validated_data.get('category', instance.category)
-        instance.color = validated_data.get('color', instance.color)
-        instance.description = validated_data.get('description', instance.description)
-        instance.main_image = validated_data.get('main_image', instance.main_image)
-        instance.price = validated_data.get('price', instance.price)
-        instance.save()
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        isinstance.save()
         
         if product_sizes is not None:
             for size_data in product_sizes:
