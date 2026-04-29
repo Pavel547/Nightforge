@@ -100,11 +100,6 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Invalid price')
         return value
     
-    def validate_category_id(self, value):
-        if not Category.objects.filter(id=value).exists():
-            raise serializers.ValidationError('Category not found')
-        return value
-    
     def validate_product_sizes(self, value):
         for items in value:
             if items['stock'] < 0:
