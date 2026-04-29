@@ -1,13 +1,14 @@
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView, ListView, DetailView
 from django.db.models import Q
+from django.db.models import Prefetch
 from django.conf import settings
 from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import ProductFilter
 from .permissions import IsAdminOrReadOnly
 from .serializers import ProductSerializer, ProductDetailSerializer, CategorySerializer
-from .models import Category, Product, Size
+from .models import Category, Product, Size, ProductSize
 
 
 class IndexView(TemplateView):
@@ -104,7 +105,15 @@ class ContactView(TemplateView):
         return context
     
 class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
+    ps_queryset = ProductSize.objects.select_related(
+        'size'
+    )
+    queryset = Product.objects.select_related(
+        'category'
+    ).prefetch_related(Prefetch(
+        'product_sizes',
+        queryset=ps_queryset
+    ))
     filter_backends = [
         filters.SearchFilter,
         filters.OrderingFilter,

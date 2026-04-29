@@ -177,35 +177,23 @@ class OrderViewSet(
                         'payment_status']
     
     def get_queryset(self):
+        base_qs = Order.objects.select_related('user').prefetch_related(
+            Prefetch(
+                'items',
+                queryset=OrderItem.objects.select_related(
+                    'product', 'product_size__size'
+                )
+            )
+        )
         if self.request.user.is_staff:
-            return Order.objects.prefetch_related(
-                Prefetch(
-                    'items',
-                    queryset=OrderItem.objects.select_related(
-                        'product', 'product_size__size'
-                    )
-                )
-            )
-        return Order.objects.filter(
-            user=self.request.user
-            ).prefetch_related(
-                Prefetch(
-                    'items', 
-                    queryset=OrderItem.objects.select_related(
-                        'product', 'product_size__size'
-                    )
-                )
-            )
+            return base_qs
+        return base_qs.filter(user=self.request.user)
 
     def get_serializer_class(self):
-        if self.action == 'list' and self.request.user.is_staff:
-            return serializers.AdminOrderSerializer
-        elif self.action == 'list':
-            return serializers.OrderSerializer
+        if self.action == 'list':
+            return serializers.AdminOrderSerializer if self.request.user.is_staff else serializers.OrderSerializer
         
-        if self.action == 'retrieve' and self.request.user.is_staff:
-            return serializers.OrderAdminDetailSerializer
-        elif self.action == 'retrieve':
-            return serializers.OrderDetailSerializer
+        if self.action == 'retrieve':
+            return serializers.OrderAdminDetailSerializer if self.request.user.is_staff else serializers.OrderDetailSerializer
         
         return serializers.OrderSerializer

@@ -28,7 +28,7 @@ class Cart(models.Model):
             cart=self,
             product=product,
             product_size=product_size,
-            defaults={'quantity': quantity} # Read more about defaults parameter
+            defaults={'quantity': quantity} 
         )
         
         if not created:

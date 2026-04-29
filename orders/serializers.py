@@ -40,8 +40,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 class OrderDetailSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(
-        queryset=CustomUser.objects.all(),
-        source='user.email'
+        read_only = True
     )
     items = OrderItemSerializer(many=True)
 
@@ -54,19 +53,18 @@ class OrderDetailSerializer(serializers.ModelSerializer):
                   'total_price', 'total_items', 
                   'created_at', 'updated_at'
                 ]
+        extra_kwargs = {
+            'id': {'read_only': True},
+            'total_price': {'read_only':True},
+            'total_items': {'read_only': True},
+        }
         
-class OrderAdminDetailSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(
-        queryset=CustomUser.objects.all(),
-    )
-    items = OrderItemSerializer(many=True)
-
-    class Meta:
-        model = Order
-        fields = ['id', 'user', 'first_name', 'last_name', 
-                  'email', 'country', 'city', 'address', 
-                  'postal_code', 'order_status', 'items',
-                  'payment_provider', 'payment_status',
-                  'stripe_payment_intent_id', 'total_price', 
-                  'total_items', 'created_at', 'updated_at'
-                ]
+class OrderAdminDetailSerializer(OrderDetailSerializer):
+    class Meta(OrderDetailSerializer.Meta):
+        fields = OrderDetailSerializer.Meta.fields + ['stripe_payment_intent_id']
+    
+    def validate_postal_code(self, value):
+        if len(value) < 4:
+            raise serializers.ValidationError('Invalid postal code')
+        return value
+    
