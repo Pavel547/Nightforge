@@ -83,7 +83,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
                 if product_size_id:
                     try:
                         ps = ProductSize.objects.get(id=product_size_id, product=instance)
-                        ps.size.name = size_data.get('size', {}).get('name', ps.size.name)
+                        ps.size = size
                         ps.stock = size_data.get('stock', ps.stock)
                         ps.save()
                     except ProductSize.DoesNotExist:
