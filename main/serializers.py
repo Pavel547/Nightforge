@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Category, ProductSize, Product, Size
+from django.db import transaction
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -58,6 +59,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             'updated_at': {'read_only': True},
         }
         
+    @transaction.atomic
     def create(self, validated_data):
         product_sizes = validated_data.pop('product_sizes', [])
         product = Product.objects.create(**validated_data)
@@ -67,6 +69,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             ProductSize.objects.create(product=product, size=size, stock=product_size['stock'])
         return product
     
+    @transaction.atomic
     def update(self, instance, validated_data):
         product_sizes = validated_data.pop('product_sizes', None)
         for attr, value in validated_data.items():
