@@ -71,7 +71,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         product_sizes = validated_data.pop('product_sizes', None)
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
-        isinstance.save()
+        instance.save()
         
         if product_sizes is not None:
             for size_data in product_sizes:
