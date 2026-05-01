@@ -91,7 +91,13 @@ class ProductDetailSerializer(serializers.ModelSerializer):
                             f'product_size with id {product_size_id} not found'
                         )
                 else:
-                    ProductSize.objects.get_or_create(product=instance, size=size, defaults={'stock': size_data['stock']})
+                    ps, created = ProductSize.objects.get_or_create(product=instance, 
+                                                      size=size, 
+                                                      defaults={'stock': size_data['stock']})
+                    if not created:
+                        ps.stock = size_data.get('stock', ps.stock)
+                        ps.save()
+                    
         return instance
     
     def validate_price(self, value):
