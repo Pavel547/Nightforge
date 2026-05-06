@@ -2,10 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout
 from django.utils.http import url_has_allowed_host_and_scheme
-from rest_framework.views import APIView
-from rest_framework import permissions, status
+from rest_framework import permissions, status, views, generics
 from rest_framework.response import Response
-from .serializers import RegisterSerializer
+from .serializers import RegisterSerializer, MeSerializer
 from .forms import CustomUserCreationForm, CustomUserLoginForm, CustomUserUpdateForm
 from .models import CustomUser
 from cart.views import CartMixin
@@ -99,7 +98,7 @@ def logout_view(request):
         return redirect('main:index')
     return render(request, 'users/logout_confirm.html')
     
-class API_Register(APIView):
+class API_Register(views.APIView):
     permission_classes = [permissions.AllowAny]
     
     def post(self, request):
@@ -109,4 +108,12 @@ class API_Register(APIView):
             login(request, user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+   
+class ProfileAPIView(generics.RetrieveAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = MeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_object(self):
+        user = self.request.user
+        return user
