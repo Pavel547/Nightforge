@@ -6,13 +6,13 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/main/', include('main.urls.api_urls', namespace='main_api')),
-    path('api/orders/', include('orders.urls', namespace='orders_api')),
+    path('api/orders/', include('orders.urls.api_urls', namespace='orders_api')),
     path('api-auth/', include('rest_framework.urls', namespace='api_auth')),
     path('api/users/', include('users.api_urls')),
     path('', include('main.urls.web_urls', namespace='main')),
     path('users/', include('users.urls', namespace='users')),
     path('cart/', include('cart.urls', namespace='cart')),
-    path('order/', include('orders.urls', namespace='orders')),
+    path('order/', include('orders.urls.web_urls', namespace='orders')),
     path('payment/', include('payment.urls', namespace='payment'))
 ]
 

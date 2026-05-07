@@ -1,17 +1,13 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.views.generic import View, ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.db.models import Prefetch
-from rest_framework import viewsets, permissions, mixins, filters
-from django_filters.rest_framework import DjangoFilterBackend
-from . import serializers
-from .filters import CustomSearchFilter
 from cart.views import CartMixin
-from .forms import OrderForm
-from .models import Order, OrderItem
+from orders.forms import OrderForm
+from orders.models import Order, OrderItem
 from decimal import Decimal
 from payment.views import create_stripe_checkout_session
 import logging
@@ -155,45 +151,3 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
                 'product', 'product_size__size')))
 
         return qs
-
-class OrderViewSet(
-    mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
-    viewsets.GenericViewSet):
-    
-    permission_classes = [
-        permissions.IsAuthenticated, 
-    ]
-    filter_backends = [
-        CustomSearchFilter,
-        filters.OrderingFilter,
-        DjangoFilterBackend
-    ]
-    ordering_fields = ['created_at', 'updated_at', 
-                       'total_price']
-    ordering = ['-created_at']
-    search_fields = ['email', 'id']
-    filterset_fields = ['order_status', 'payment_provider', 
-                        'payment_status']
-    
-    def get_queryset(self):
-        base_qs = Order.objects.select_related('user').prefetch_related(
-            Prefetch(
-                'items',
-                queryset=OrderItem.objects.select_related(
-                    'product', 'product_size__size'
-                )
-            )
-        )
-        if self.request.user.is_staff:
-            return base_qs
-        return base_qs.filter(user=self.request.user)
-
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return serializers.AdminOrderSerializer if self.request.user.is_staff else serializers.OrderSerializer
-        
-        if self.action == 'retrieve':
-            return serializers.OrderAdminDetailSerializer if self.request.user.is_staff else serializers.OrderDetailSerializer
-        
-        return serializers.OrderSerializer
