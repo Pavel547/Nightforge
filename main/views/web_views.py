@@ -1,14 +1,8 @@
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView, ListView, DetailView
 from django.db.models import Q
-from django.db.models import Prefetch
 from django.conf import settings
-from rest_framework import viewsets, filters
-from django_filters.rest_framework import DjangoFilterBackend
-from .filters import ProductFilter
-from .permissions import IsAdminOrReadOnly
-from .serializers import ProductSerializer, ProductDetailSerializer, CategorySerializer
-from .models import Category, Product, Size, ProductSize
+from main.models import Category, Product, Size
 
 
 class IndexView(TemplateView):
@@ -103,33 +97,3 @@ class ContactView(TemplateView):
         context['email'] = settings.EMAIL_HOST_USER
 
         return context
-    
-class ProductViewSet(viewsets.ModelViewSet):
-    ps_queryset = ProductSize.objects.select_related(
-        'size'
-    )
-    queryset = Product.objects.select_related(
-        'category'
-    ).prefetch_related(Prefetch(
-        'product_sizes',
-        queryset=ps_queryset
-    ))
-    filter_backends = [
-        filters.SearchFilter,
-        filters.OrderingFilter,
-        DjangoFilterBackend
-    ]
-    search_fields = ['id', 'name', 'description']
-    ordering_fields = ['price', 'created_at']
-    filterset_class = ProductFilter
-    permission_classes = [IsAdminOrReadOnly]
-    
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return ProductSerializer
-        return ProductDetailSerializer
-
-class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-    permission_classes = [IsAdminOrReadOnly]
