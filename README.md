@@ -1,5 +1,6 @@
 # Nightforge - Dark Fantasy Gothic Clothing Shop
 ![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
+![DRF](https://img.shields.io/badge/DRF-ff1709?logo=django&logoColor=white)
 ![Django](https://img.shields.io/badge/Django-092E20?logo=django&logoColor=white)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?logo=tailwind-css&logoColor=white)
@@ -12,15 +13,15 @@
 
 ## 📌 Description
 
-Nightforge - is a full-stack e-commerce web application build with Django
-It allows users to browse a catalog of dark fantasy clothing, add products 
-to a shopping cart, and securely place orders online with payment integration.
+Nightforge is a full-stack e-commerce application built with Django and Django REST Framework, 
+focused on clean API design, database optimization, and secure order processing.
 
 ---
 
 ## 🚀 Features
 
 - Custom user authentication (register, login, logout, profile management)
+- REST API with filtering, search, ordering and pagination
 - Product catalog with search, filtering and sorting
 - Shopping cart system
 - Order creation and management
@@ -30,9 +31,19 @@ to a shopping cart, and securely place orders online with payment integration.
 
 ---
 
+## ⚙️ API Features
+
+- Pagination (LimitOffsetPagination)
+- Filtering (DjangoFilterBackend, Custom filters)
+- Search & Ordering
+- Custom permissions (admin vs user)
+
+---
+
 ## 🛠 Tech Stack
 
 - **Backend:** Django, Python  
+- **API:** Django REST Framework
 - **Database:** PostgreSQL  
 - **Frontend:** HTML, CSS (Tailwind CSS)  
 - **Payments:** Stripe  
@@ -58,7 +69,7 @@ Dark-fantasy-gothic-clothing-shop/
 ├── shop/ # Django project(settings, urls, wsgi)
 ├── main/ # Main app (homepage, catalog, product details)
 ├── users/ # Authentication and user profiles
-├── cart/ # Shoping cart logig
+├── cart/ # Shopping cart logiс
 ├── orders/ # Order management
 ├── payment/ # Stripe integration and webhooks
 ├── templates/ # HTML templates
@@ -139,6 +150,42 @@ python manage.py runserver
 ## ⚠️ Notes
 To send emails in production, you need a verified domain for Resend.
 SMTP (Gmail) can be used for development purposes.
+
+---
+
+## 🔗 API Endpoints
+
+### Products
+GET /api/main/products/  
+GET /api/main/products/{id}/  
+
+Supports:
+- search
+- filtering
+- ordering
+- pagination
+
+---
+
+### Orders
+GET /api/orders/orders/  
+GET /api/orders/orders/{id}/  
+
+- Authenticated users can view their own orders  
+- Admin users can view all orders  
+
+---
+
+### Authentication
+POST /api/users/register/  
+POST /api-auth/login/  
+POST /api-auth/logout/
+
+Authentication is handled using Django session-based authentication,
+which is suitable for server-rendered applications using Django templates.
+
+### Profile
+GET /api/users/profile/
 
 ---
 
